@@ -1,0 +1,206 @@
+import type { Folder, Item, Session, Settings, ProgressLog, Notification } from "@/lib/types";
+
+// Mock "now" — 6 November 2026, 6:42 PM PKT
+export const MOCK_NOW = "2026-11-06T18:42:15+05:00";
+
+export const mockSettings: Settings = {
+  daily_target_hours: 5.0,
+  theme: "dark",
+  timezone: "Asia/Karachi",
+  week_starts_on: "monday",
+  notifications_enabled: true,
+  reminder_time: "09:00",
+  quiet_hours_start: "22:00",
+  quiet_hours_end: "07:00",
+  ai_model: "llama-3.1-8b-instant",
+  ai_mode_enabled: true, // AI mode is default
+};
+
+export const mockFolders: Folder[] = [
+  { id: "folder-1", parent_id: null, title: "Fall 2026", color: "blue", locked: false, position: 0, archived_at: null },
+  { id: "folder-2", parent_id: "folder-1", title: "Core Subjects", color: "orange", locked: false, position: 0, archived_at: null },
+  { id: "folder-3", parent_id: "folder-1", title: "Assignments", color: "red", locked: true, position: 1, archived_at: null },
+];
+
+export const mockItems: Item[] = [
+  {
+    id: "item-1",
+    folder_id: "folder-2",
+    title: "Database Systems",
+    goal_type: "hours",
+    unit: "hrs",
+    total_units: 200,
+    total_goal: 200,
+    done_units: 120,
+    daily_target: 3,
+    roll_over_hours: 0.5,
+    deadline_days: 30,
+    start_date: "2026-10-15",
+    due_date: "2026-11-22",
+    target_date: "2026-11-19",
+    original_target_date: "2026-11-19",
+    priority: "high",
+    chapters: [
+      { id: "ch-1", title: "ER Models", done: true },
+      { id: "ch-2", title: "Normalization", done: true },
+      { id: "ch-3", title: "SQL Queries", done: false },
+      { id: "ch-4", title: "Transactions", done: false },
+    ],
+    status: "doing",
+    color: "blue",
+    pinned: true,
+    notes: null,
+    aliases: ["DB", "DBMS", "Databases"],
+    position: 0,
+    archived_at: null,
+    updated_at: MOCK_NOW,
+  },
+  {
+    id: "item-2",
+    folder_id: "folder-2",
+    title: "Operating Systems",
+    goal_type: "days",
+    unit: "days",
+    total_units: 16,
+    total_goal: 16,
+    done_units: 0,
+    daily_target: 2,
+    roll_over_hours: 4,
+    deadline_days: 16,
+    start_date: "2026-10-25",
+    due_date: "2026-12-09",
+    target_date: "2026-12-15",
+    original_target_date: "2026-12-01",
+    priority: "high",
+    chapters: [],
+    status: "doing",
+    color: "orange",
+    pinned: true,
+    notes: null,
+    aliases: ["OS"],
+    position: 1,
+    archived_at: null,
+    updated_at: MOCK_NOW,
+  },
+  {
+    id: "item-3",
+    folder_id: "folder-2",
+    title: "Algorithms",
+    goal_type: "chapters",
+    unit: "chapters",
+    total_units: 12,
+    total_goal: 12,
+    done_units: 12,
+    daily_target: 1,
+    roll_over_hours: 0,
+    deadline_days: 30,
+    start_date: "2026-09-15",
+    due_date: "2026-11-01",
+    target_date: "2026-10-30",
+    original_target_date: "2026-10-30",
+    priority: "medium",
+    chapters: [
+      { id: "ch-a1", title: "Big-O Analysis", done: true },
+      { id: "ch-a2", title: "Sorting", done: true },
+      { id: "ch-a3", title: "Graphs", done: true },
+    ],
+    status: "done",
+    color: "green",
+    pinned: false,
+    notes: null,
+    aliases: ["DSA", "Algo"],
+    position: 2,
+    archived_at: null,
+    updated_at: MOCK_NOW,
+  },
+  {
+    id: "item-4",
+    folder_id: "folder-3",
+    title: "Faag",
+    goal_type: "hours",
+    unit: "hrs",
+    total_units: 2000,
+    total_goal: 2000,
+    done_units: 0,
+    daily_target: 3,
+    roll_over_hours: 9,
+    deadline_days: null,
+    start_date: "2026-10-25",
+    due_date: null,
+    target_date: null,
+    original_target_date: null,
+    priority: "high",
+    chapters: [],
+    status: "todo",
+    color: "red",
+    pinned: false,
+    notes: null,
+    aliases: ["FYP"],
+    position: 3,
+    archived_at: null,
+    updated_at: MOCK_NOW,
+  },
+  {
+    id: "item-5",
+    folder_id: "folder-3",
+    title: "Fyp",
+    goal_type: "days",
+    unit: "days",
+    total_units: 16,
+    total_goal: 16,
+    done_units: 0,
+    daily_target: 2,
+    roll_over_hours: 6,
+    deadline_days: 16,
+    start_date: "2026-10-25",
+    due_date: "2026-11-25",
+    target_date: "2026-11-25",
+    original_target_date: "2026-11-25",
+    priority: "medium",
+    chapters: [],
+    status: "todo",
+    color: "orange",
+    pinned: false,
+    notes: null,
+    aliases: [],
+    position: 4,
+    archived_at: null,
+    updated_at: MOCK_NOW,
+  },
+];
+
+// Active session on Database Systems — started 42:15 ago
+const startedAgo = 42 * 60 + 15;
+const startedAt = new Date(Date.parse(MOCK_NOW) - startedAgo * 1000).toISOString();
+
+export const mockSessions: Session[] = [
+  { id: "session-1", item_id: "item-1", started_at: startedAt, paused_at: null, paused_seconds: 0, ended_at: null },
+];
+
+export const mockProgressLogs: ProgressLog[] = [
+  { id: "log-1", item_id: "item-1", amount: 2.5, logged_at: "2026-11-06T10:00:00+05:00", source: "manual", note: "Morning session" },
+  { id: "log-2", item_id: "item-2", amount: 1.0, logged_at: "2026-11-06T14:00:00+05:00", source: "manual", note: "OS lab prep" },
+  { id: "log-3", item_id: "item-3", amount: 1.0, logged_at: "2026-11-06T16:00:00+05:00", source: "manual", note: "Algorithms review" },
+];
+
+export const mockNotifications: Notification[] = [
+  { id: "notif-1", type: "deadline_soon", title: "Database Systems deadline approaching", body: "Due in 16 days (22 Nov). On pace, keep it up.", item_id: "item-1", scheduled_for: MOCK_NOW, read_at: null },
+  { id: "notif-2", type: "behind_schedule", title: "Operating Systems is behind schedule", body: "Projected finish (15 Dec) is past the deadline (9 Dec). Consider raising daily target.", item_id: "item-2", scheduled_for: MOCK_NOW, read_at: null },
+  { id: "notif-3", type: "daily_goal_met", title: "Yesterday's goal met ✓", body: "You logged 6.1h against a 6.0h target. Great work.", item_id: null, scheduled_for: "2026-11-05T20:00:00+05:00", read_at: "2026-11-06T08:00:00+05:00" },
+];
+
+export const MOCK_EFFORT_7D = [
+  { day: "Sat", hours: 4.2 },
+  { day: "Sun", hours: 5.8 },
+  { day: "Mon", hours: 3.5 },
+  { day: "Tue", hours: 6.1 },
+  { day: "Wed", hours: 7.0 },
+  { day: "Thu", hours: 4.5 },
+  { day: "Fri", hours: 5.2 },
+];
+
+export const MOCK_DISTRIBUTION = [
+  { label: "Database Systems", value: 45, color: "blue" as const },
+  { label: "Operating Systems", value: 25, color: "orange" as const },
+  { label: "Algorithms", value: 30, color: "green" as const },
+];
